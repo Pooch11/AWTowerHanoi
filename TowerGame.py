@@ -141,13 +141,15 @@ class TowerGame:
         """
             Checks if the win condition of the game has been met
         """
-        global WINCONDITION
         if (len(self.GamePegs[_peg_num -1].contents) == _disk_num):
-            for i, disk in self.GamePegs[_peg_num -1].contents:
-                if (disk.size == self.GameDisks[i].size):
-                    print("All disks in correct order")
-            print("Congratulations You Win!")
-            WINCONDITION = True
+            nextBiggest = 0 
+            for i, disk in enumerate(self.GamePegs[_peg_num -1].contents):   
+                if (disk.size <= nextBiggest):
+                    nextBiggest = disk.size
+                    self.WINCONDITION = True
+            if (self.WINCONDITION == True):
+                print("All disks in correct order")
+                print("Congratulations You Win!")       
         else:
             print("Disks have been stacked on the incorrect Goal Peg (#{0})".format(_peg_num))
 
