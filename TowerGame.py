@@ -1,4 +1,4 @@
-import sys
+import sys, json
 #initialize the game with a certain amount of disks from config (and certain amount of pegs)
 #Config settings (TODO)
 _disk_num = 4
@@ -15,6 +15,8 @@ class Disk:
         self.size = size #has a certain size
     def check_size(self):
         return self.size
+    def _dump(self):
+        return { "Disk" : { 'size' : self.size}}
 class Peg:
     """
         This class defines a Peg game object
@@ -31,6 +33,14 @@ class Peg:
     def _peek(self):
         if (len(self.contents) > 0):
             return self.contents[0]
+    def _dump(self):
+        return { "Peg" : {  'Disks' : self.jsonify_contents(),
+                            'Position' : self.position }}
+    def jsonify_contents(self):
+        disks = {}
+        for i, disk in enumerate(self.contents):
+           disks.update({ i : disk._dump() })
+        return disks
     def checkContents(self):
         for i, disk in enumerate(self.contents):
             print("Disk# {0} - Size: {1}  Peg# {2}".format(("(Top Disk)" if i == 0 else i), disk.check_size(), self.position))
@@ -88,7 +98,18 @@ class TowerGame:
             print("Peg {0}".format(i.position))
             print("{0}".format(self._inspectPeg(i)))
             print("\n")
+    def jsonifyGameState(self):
+        state = ""
+        for peg in self.GamePegs:
+            state += json.dumps(peg._dump())
+        return state
 
+    def getPeg(self, pegIndexNumber):
+        """
+            Translates a Peg number to a Game Peg indexed in the Tower Game
+            Returns a Peg Obj
+        """
+        return self.GamePegs[pegIndexNumber - 1]
     def moveDisktoPeg(self, pegFrom :Peg, pegTo :Peg):
         """
             Method describes the movement of a disk from the source peg to the destination peg
