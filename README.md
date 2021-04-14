@@ -43,11 +43,60 @@ See Endpoint documentation for end-user functions
 
 The Towers of Hanoi game can be interactable in 2 main ways.
 
-Running 'python TowerAPI.py' and then navigating to the browser
+Running 'python TowerAPI.py' and then navigating to the browser(127.0.0.1:5000/)
 
 or
 
-Running 'python TowerGame.py' as the main entry point into a CMD version of the game
+Running 'python TowerGame.py -d' as the main entry point into a CMD version of the game in a debug mode
 
 The Tester file - TowerTester.py validates both Functions at the Game level version but can also be called to test appropriate respponses from the API calls made.
 
+/
+Description:
+The home page of the web application, starts a new game when called unless one is already in progress
+Otherwise, reports the game state information in JSON format
+Parameters:
+(Optional) - 'new'
+	- restarts a new game
+
+/newgame
+Description:
+Forcibly starts a new game
+Parameters:
+ - None
+
+/movepeg
+Description:
+Executes a user's game move by attempting to move a disk from the source peg to the destination peg
+Parameters:
+Parameter 1 (int) - from
+	- The source peg
+Parameter 2 (int) - to
+	- The destination peg
+	
+Example Usage:
+	http://127.0.0.1:5000/movepeg?from=1&to=3
+
+
+/gamewin
+Description:
+Checks the state of the game by reporting if the game is complete or not
+Parameters:
+- None
+Returns Code 400 if Game is not complete, 200 if game is won
+
+
+/gamestatus
+Description:
+Reports the status of the game by reporting the contents of each peg in the game instance in JSON format if the game is still in progress
+Parameters:
+- None
+
+/pegstatus
+Description:
+Reports the status of a single peg and returns a JSON string representation of the Peg
+Parameters:
+Parameter 1 (int) - peg
+
+Example Usage:
+http://127.0.0.1:5000/pegstatus?peg=1

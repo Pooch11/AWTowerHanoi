@@ -38,8 +38,13 @@ def movePeg():
     _from = GLOBALGAME.getPeg(fromID)
     _to = GLOBALGAME.getPeg(toID)
     if isinstance(_from , Peg) and isinstance(_to , Peg):
-        GLOBALGAME.moveDisktoPeg(_from, _to)
-        return "Moved Disk from Peg {0} to {1}".format(fromID, toID)
+        valid_move = GLOBALGAME.moveDisktoPeg(_from, _to)
+        if (valid_move ):
+            return "Results <br/>  Peg {0}".format(fromID) + str(_from._dump()) + "<br/>" + "Peg {0}".format(toID) + str(_to._dump())
+        else:
+            return "Invalid Move <br/> " + GLOBALGAME.jsonifyGameState()
+    else:
+        return "Invalid input from Query Parameters"
 @app.route('/gamewin', methods=['GET'])
 def reportWin():
     if (GLOBALGAME.WINCONDITION is False):
@@ -48,7 +53,7 @@ def reportWin():
         return "Game Complete!", 200
 
 @app.route('/gamestatus', methods=['GET'])
-def inspect():
+def inspectGame():
     if (isinstance(GLOBALGAME, TowerGame)):
         if (GLOBALGAME.WINCONDITION is False):
             return GLOBALGAME.jsonifyGameState()
@@ -56,5 +61,13 @@ def inspect():
             GLOBALGAME.jsonifyGameState() + "The Game is Won! go to " + 'localhost:5000/?newgame=1'
     else:
         return "No Game has been started"
+
+@app.route('/pegstatus', methods=['GET'])
+def inspectPeg():
+    if (isinstance(GLOBALGAME, TowerGame)):
+        if (GLOBALGAME.WINCONDITION is False):
+            if 'peg' in request.args:
+                peg_num = int(request.args['peg'])
+                return str(GLOBALGAME.getPeg(peg_num)._dump())
 
 app.run()
