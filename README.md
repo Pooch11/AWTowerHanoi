@@ -17,11 +17,13 @@ Make your app available as a Github repository.  Please have your solution poste
 Technical Requirements:
 Python 3 and PIP, see requirements.txt to see full list of packages to include
 
-TowerGame - Contains all the game puzzle logic
+TowerGame.py - Contains all the game puzzle logic
 
-TowerAPI - An API endpoint to invoke moves/options within the game
+TowerAPI.py - An API endpoint to invoke moves/options within the game
 
 TowerTester - An automated tester to check the validity of each game function
+
+config.py - (deprecated) Initialy made to load in different settings for the game but is less userful at this time.
 
 
 Development environment:
@@ -38,4 +40,14 @@ To run the Towers of Hanoi API - open a cmd prompt window in the file directory 
 This will create an endpoint that interacts with one instance of the game located at 127.0.0.1:5000/
 
 See Endpoint documentation for end-user functions
+
+The Towers of Hanoi game can be interactable in 2 main ways.
+
+Running 'python TowerAPI.py' and then navigating to the browser
+
+or
+
+Running 'python TowerGame.py' as the main entry point into a CMD version of the game
+
+The Tester file - TowerTester.py validates both Functions at the Game level version but can also be called to test appropriate respponses from the API calls made.
 

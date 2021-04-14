@@ -39,7 +39,13 @@ def movePeg():
     _to = GLOBALGAME.getPeg(toID)
     if isinstance(_from , Peg) and isinstance(_to , Peg):
         GLOBALGAME.moveDisktoPeg(_from, _to)
-        return "Success Moved Disk from Peg {0} to {1}".format(fromID, toID)
+        return "Moved Disk from Peg {0} to {1}".format(fromID, toID)
+@app.route('/gamewin', methods=['GET'])
+def reportWin():
+    if (GLOBALGAME.WINCONDITION is False):
+        return "Game not completed", 400
+    else:
+        return "Game Complete!", 200
 
 @app.route('/gamestatus', methods=['GET'])
 def inspect():

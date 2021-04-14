@@ -1,10 +1,10 @@
 import sys, json
-#initialize the game with a certain amount of disks from config (and certain amount of pegs)
-#Config settings (TODO)
+#Config settings
+#If in need of a config file to change the game settings (Peg/Disks) I could implement a config file read
+#from config import Config
+#config = Config()
 _disk_num = 4
 _peg_num = 3
-
-
 
 class Disk:
     """
@@ -29,13 +29,19 @@ class Peg:
         if self.position == 1:
             for disk in diskContents:
                 self.addDisk(disk)
-            print("Disks initialized on Peg#{0}".format(self.position))
+            if (len(sys.argv) > 1):
+                print("Disks initialized on Peg#{0}".format(self.position))
     def _peek(self):
         """
             Peek at the top disk of this peg
         """
         if (len(self.contents) > 0):
             return self.contents[0]
+    def _checkContents(self):
+        """
+            Print out a log of the contents
+        """
+        print(str(self._dump()))
     def _dump(self):
         """
             Returns a dict representation of this Peg
@@ -71,13 +77,12 @@ class Peg:
             Add disks to the top of the peg stack
         """
         self.contents.insert(0, disk)
-
-
     def removeDisk(self):
+        """
+            Remove a disk from the top of the peg stack
+        """
         return self.contents.pop(0)
-    def checkContents(self):
-        for i, disk in enumerate(self.contents):
-            print("Disk# {0} - Size: {1}  Peg# {2}".format(("(Top Disk)" if i == 0 else i), disk.check_size(), self.position))
+
 
 
 
@@ -98,7 +103,8 @@ class TowerGame:
             self.GameDisks.append(Disk(i))
         self.GameDisks.reverse()    
         for i in range(1, pegs + 1):
-            print("Peg #{0} created".format(i))
+            if (len(sys.argv) > 1):
+                print("Peg #{0} created".format(i))
             self.GamePegs.append(Peg(i))
         self.GamePegs[0]._initContents(self.GameDisks)
         
@@ -107,12 +113,14 @@ class TowerGame:
         """
             Invokes a print out of the contents (Disks) on a Peg to the caller
         """
-        return pegNumber.checkContents()
-    def reportGameState(self):
+        return pegNumber._checkContents()
+
+    def _reportGameState(self):
         for i in self.GamePegs:
             print("Peg {0}".format(i.position))
             print("{0}".format(self._inspectPeg(i)))
             print("\n")
+
     def jsonifyGameState(self):
         """
             Creates a string representation of the TowerGame object
@@ -123,25 +131,34 @@ class TowerGame:
             state += json.dumps(peg._dump())
         return state
 
-    def getPeg(self, pegIndexNumber):
+    def getPeg(self, pegIndexNumber: int):
         """
             Translates a Peg number to a Game Peg indexed in the Tower Game
             Returns a Peg Obj
         """
+        if (not isinstance(pegIndexNumber, int)):
+            return None
+        if (pegIndexNumber not in range(1, _peg_num + 1)):
+            return None
         return self.GamePegs[pegIndexNumber - 1]
+
     def moveDisktoPeg(self, pegFrom :Peg, pegTo :Peg):
         """
             Method describes the movement of a disk from the source peg to the destination peg
             Handles all the necessary sizing rules to accept or deny movements
             :param pegFrom: (Peg Obj) The source Peg we are taking a disk from
             :param pegTo: (Peg Obj) The destination Peg we are placing a disk to 
+            Returns True if the move was valid, False if there was an error
         """
+        if (pegFrom == None or pegTo == None):
+            return False
         if (pegFrom.isEmpty()):
             print("No disks to move")
-            return
+            return False
         if (len(pegTo.contents) != 0 and len(pegFrom.contents) != 0):
             if (pegTo.peekTopSize() < pegFrom.peekTopSize()):
                 print("Cannot make this move, Destination Peg has a smaller disk size.")
+                return False
             else:
                 disk_to_add = pegFrom.peekTopSize()
                 pegTo.addDisk(Disk(disk_to_add))
@@ -155,10 +172,12 @@ class TowerGame:
         #Add check win condition here
         if (len(pegTo.contents) == _disk_num):
             self.check_win()
+        return True
 
     def check_win(self):
         """
             Checks if the win condition of the game has been met
+            returns True/False
         """
         if (len(self.GamePegs[_peg_num -1].contents) == _disk_num):
             nextBiggest = 0 
@@ -168,24 +187,28 @@ class TowerGame:
                     self.WINCONDITION = True
             if (self.WINCONDITION == True):
                 print("All disks in correct order")
-                print("Congratulations You Win!")       
+                print("Congratulations You Win!")
+                return True      
         else:
             print("Disks have been stacked on the incorrect Goal Peg (#{0})".format(_peg_num))
+            return False
 
-##Invoke Game to Interact with
-if (len(sys.argv) > 1):
-    temp = TowerGame(_disk_num, _peg_num)
-    print("Welcome to Towers of Hanoi - There are {0} disks and {1} pegs in this version".format(_disk_num, _peg_num))
-    print("Move disks on pegs to by typing out the source peg # and destionation peg # when prompted")
-    while(not temp.WINCONDITION):
-        temp.reportGameState()
-        txt = input("Source Peg# / Destination Peg#: ") 
-        source, dest = map(int, txt.split())
-        print ("Attempting to move a disk from {0} to {1}".format(source, dest))
-        if ((1 <= source and 1 <= dest) and (_peg_num >= source and _peg_num >= dest)):
-            temp.moveDisktoPeg( temp.GamePegs[source - 1], temp.GamePegs[dest - 1])
-        else:
-            print("Cannot execute move - Peg # not in range. There are a maximum of {0} pegs".format(_peg_num))
+##Invoke Game as main entrypoint to interact with in CMD
+if __name__ == '__main__':
+    if (len(sys.argv) > 1):
+        if (sys.argv[1] == "-d"):
+            temp = TowerGame(_disk_num, _peg_num)
+            print("Welcome to Towers of Hanoi - There are {0} disks and {1} pegs in this version".format(_disk_num, _peg_num))
+            print("Move disks on pegs to by typing out the source peg # and destionation peg # when prompted")
+            while(not temp.WINCONDITION):
+                temp._reportGameState()
+                txt = input("Source Peg# / Destination Peg#: ") 
+                source, dest = map(int, txt.split())
+                print ("Attempting to move a disk from {0} to {1}".format(source, dest))
+                if ((1 <= source and 1 <= dest) and (_peg_num >= source and _peg_num >= dest)):
+                    temp.moveDisktoPeg( temp.GamePegs[source - 1], temp.GamePegs[dest - 1])
+                else:
+                    print("Cannot execute move - Peg # not in range. There are a maximum of {0} pegs".format(_peg_num))
 
 
 
