@@ -10,6 +10,18 @@ GLOBALGAME = {}
 @app.route('/', methods=['GET'])
 def start():
     global GLOBALGAME
+    if (isinstance(GLOBALGAME, TowerGame)):
+        if 'new' in request.args:
+            GLOBALGAME = TowerGame()
+            return "Started a new game!"
+        return "Already a game in progress\n" + GLOBALGAME.jsonifyGameState()
+    else:
+        GLOBALGAME = TowerGame()
+        return "Started a new game!"
+
+@app.route('/newgame', methods=['GET'])
+def newgame():
+    global GLOBALGAME
     GLOBALGAME = TowerGame()
     return "Started a new game!"
 
@@ -32,8 +44,10 @@ def movePeg():
 @app.route('/gamestatus', methods=['GET'])
 def inspect():
     if (isinstance(GLOBALGAME, TowerGame)):
-        return GLOBALGAME.jsonifyGameState()
-        
+        if (GLOBALGAME.WINCONDITION is False):
+            return GLOBALGAME.jsonifyGameState()
+        else:
+            GLOBALGAME.jsonifyGameState() + "The Game is Won! go to " + 'localhost:5000/?newgame=1'
     else:
         return "No Game has been started"
 

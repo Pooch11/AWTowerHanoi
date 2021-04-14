@@ -31,40 +31,55 @@ class Peg:
                 self.addDisk(disk)
             print("Disks initialized on Peg#{0}".format(self.position))
     def _peek(self):
+        """
+            Peek at the top disk of this peg
+        """
         if (len(self.contents) > 0):
             return self.contents[0]
     def _dump(self):
+        """
+            Returns a dict representation of this Peg
+        """
         return { "Peg" : {  'Disks' : self.jsonify_contents(),
                             'Position' : self.position }}
     def jsonify_contents(self):
+        """
+            Returns a string representation of the disks on this Peg
+        """
         disks = {}
         for i, disk in enumerate(self.contents):
            disks.update({ i : disk._dump() })
         return disks
-    def checkContents(self):
-        for i, disk in enumerate(self.contents):
-            print("Disk# {0} - Size: {1}  Peg# {2}".format(("(Top Disk)" if i == 0 else i), disk.check_size(), self.position))
     def isEmpty(self):
+        """
+            Checks if the contents of the peg is empty
+            Returns True/False
+        """
         return self.contents == []
     def peekTopSize(self):
+        """
+            Peek at the top disk object
+            Returns a size (int)
+        """
         if (len(self.contents) > 0):
             if self.contents[0] is not None:
                 return self.contents[0].check_size()
             else:
                 return 0
     def addDisk(self, disk :Disk):
+        """
+            Add disks to the top of the peg stack
+        """
         self.contents.insert(0, disk)
-        #check contents size (more than 1) else add to list (TODO)
-        #check size of disk else cannot add this disk to this peg
+
+
     def removeDisk(self):
         return self.contents.pop(0)
-    def _checkPostion(self):
-        if self.position == 1:
-            print("This is the Starter peg")
-        elif self.position == _peg_num:
-            print("This is the Goal peg")
-        else:
-            print("This is the working peg")
+    def checkContents(self):
+        for i, disk in enumerate(self.contents):
+            print("Disk# {0} - Size: {1}  Peg# {2}".format(("(Top Disk)" if i == 0 else i), disk.check_size(), self.position))
+
+
 
 
 
@@ -99,6 +114,10 @@ class TowerGame:
             print("{0}".format(self._inspectPeg(i)))
             print("\n")
     def jsonifyGameState(self):
+        """
+            Creates a string representation of the TowerGame object
+            Returns (String)
+        """
         state = ""
         for peg in self.GamePegs:
             state += json.dumps(peg._dump())
@@ -113,7 +132,7 @@ class TowerGame:
     def moveDisktoPeg(self, pegFrom :Peg, pegTo :Peg):
         """
             Method describes the movement of a disk from the source peg to the destination peg
-            Handles all the necessary logic to accept or deny movements
+            Handles all the necessary sizing rules to accept or deny movements
             :param pegFrom: (Peg Obj) The source Peg we are taking a disk from
             :param pegTo: (Peg Obj) The destination Peg we are placing a disk to 
         """
