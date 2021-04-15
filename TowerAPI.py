@@ -60,14 +60,16 @@ def inspectGame():
         else:
             GLOBALGAME.jsonifyGameState() + "The Game is Won! go to " + 'localhost:5000/?newgame=1'
     else:
-        return "No Game has been started"
+        return "No Game has been started", 400
 
 @app.route('/pegstatus', methods=['GET'])
 def inspectPeg():
     if (isinstance(GLOBALGAME, TowerGame)):
-        if (GLOBALGAME.WINCONDITION is False):
             if 'peg' in request.args:
                 peg_num = int(request.args['peg'])
                 return str(GLOBALGAME.getPeg(peg_num)._dump())
+    else:
+        return "No Game has been started"
+
 
 app.run()
