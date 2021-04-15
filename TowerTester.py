@@ -98,6 +98,55 @@ class TowersTestCase(unittest.TestCase):
         testGame.moveDisktoPeg( testGame.getPeg(1), testGame.getPeg(3))
         self.assertEqual(testGame.check_win(), True)
 
+class TowersAPITestCase(unittest.TestCase):
+    def test_startAPI(self):
+        r = requests.get('http://127.0.0.1:5000/')
+        print(r.text)
+
+    def test_newgameAPI(self):
+        r = requests.get('http://127.0.0.1:5000/?new=1')
+        print(r.text)
+
+
+    def test_movePegAPI(self, fromPeg, toPeg):
+        r = requests.get('http://127.0.0.1:5000/movepeg?from={0}&to={1}'.format(fromPeg, toPeg))
+        print(r.text)
+
+    def test_inspectPegAPI(self):
+        pass
+
+    def test_inspectGameAPI(self):
+        pass
+
+    def test_reportWinAPI(self):
+        r = requests.get('http://127.0.0.1:5000/gamewin')
+        print(r.text)
+        assert r.text == "Game Complete!"
+
+    def test_WinConAPI(self):
+        self.test_movePegAPI(1,2)
+        self.test_movePegAPI(1,3)
+        self.test_movePegAPI(2,3)
+        self.test_movePegAPI(1,2)
+        self.test_movePegAPI(3,1)
+        self.test_movePegAPI(3,2)
+        self.test_movePegAPI(1,2)
+        self.test_movePegAPI(1,3)
+        self.test_movePegAPI(2,1)
+        self.test_movePegAPI(2,3)
+        self.test_movePegAPI(1,3)
+        self.test_movePegAPI(2,1)
+        self.test_movePegAPI(3,2)
+        self.test_movePegAPI(3,1)
+        self.test_movePegAPI(2,3)
+        self.test_movePegAPI(1,2)
+        self.test_movePegAPI(3,2)
+        self.test_movePegAPI(1,3)
+        self.test_movePegAPI(2,1)
+        self.test_movePegAPI(2,3)
+        self.test_movePegAPI(1,3)
+        self.test_reportWinAPI()
+
 
 if __name__ == '__main__':
     unittest.main()

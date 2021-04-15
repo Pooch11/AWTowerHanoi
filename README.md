@@ -12,21 +12,21 @@ Any requirements not stated above should be decided upon by you, and documented 
 
 That said, we are happy to consider solutions in other languages and frameworks.Don’t forget about test coverage.Feel free to use third-party widgets and layout frameworks, build tools or whatever you would normally use
 
-Make your app available as a Github repository.  Please have your solution posted within 5 days of receiving the test.
+------------------------------------------------------------------------------------------------
 
-Technical Requirements:
+## Technical Requirements:
 Python 3 and PIP, see requirements.txt to see full list of packages to include
 
-TowerGame.py - Contains all the game puzzle logic
+*TowerGame.py* - Contains all the game puzzle logic
 
-TowerAPI.py - An API endpoint to invoke moves/options within the game
+*TowerAPI.py* - An API endpoint to invoke moves/options within the game
 
-TowerTester - An automated tester to check the validity of each game function
+*TowerTester* - An automated tester to check the validity of each game function
 
-config.py - (deprecated) Initialy made to load in different settings for the game but is less userful at this time.
+*config.py* - (deprecated) Initialy made to load in different settings for the game but is less userful at this time.
 
 
-Development environment:
+## Development environment: 
 
 Ensure you have python installed and proper environmnet variables are set
 
@@ -51,6 +51,7 @@ Running 'python TowerGame.py -d' as the main entry point into a CMD version of t
 
 The Tester file - TowerTester.py validates both Functions at the Game level version but can also be called to test appropriate respponses from the API calls made.
 
+## API Methods
 /
 Description:
 The home page of the web application, starts a new game when called unless one is already in progress
