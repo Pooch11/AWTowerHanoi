@@ -1,6 +1,6 @@
 # Contents
 ## 1. [Goal](https://github.com/Pooch11/AWTowerHanoi#Goal)
-## 2. [Technical Requirements](https://github.com/Pooch11/AWTowerHanoi#Technical)
+## 2. [Technical Requirements](https://github.com/Pooch11/AWTowerHanoi#Technical-Requirements)
 ## 3. [Development environment Requirements](https://github.com/Pooch11/AWTowerHanoi#Development)
 ## 4. [API Method Reference](https://github.com/Pooch11/AWTowerHanoi#API)
 
