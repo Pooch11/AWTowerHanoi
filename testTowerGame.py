@@ -1,6 +1,5 @@
 import unittest
 from TowerGame import Disk, Peg, TowerGame
-import requests
 
 class TowersTestCase(unittest.TestCase):
     #Test InitGame
@@ -19,7 +18,25 @@ class TowersTestCase(unittest.TestCase):
         self.testGame = TowerGame()
         invalidPeg = self.testGame.getPeg(6)
         self.assertEqual(invalidPeg, None)
+
+    #try getting Peg not in game range
+    def test_invalidZero_getPeg(self):
+        self.testGame = TowerGame()
+        invalidPeg = self.testGame.getPeg(0)
+        self.assertEqual(invalidPeg, None)
     
+    #try getting Peg not in game range (negative)
+    def test_invalidNegative_getPeg(self):
+        self.testGame = TowerGame()
+        invalidPeg = self.testGame.getPeg(-1)
+        self.assertEqual(invalidPeg, None)
+
+    #try getting Peg with decimal number
+    def test_invalidDouble_getPeg(self):
+        self.testGame = TowerGame()
+        invalidPeg = self.testGame.getPeg(1.866)
+        self.assertEqual(invalidPeg, None)
+
     #try invalid input to getPeg
     def test_badInput_getPeg(self):
         self.testGame = TowerGame()     

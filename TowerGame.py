@@ -21,9 +21,11 @@ class Peg:
     """
         This class defines a Peg game object
         Each Peg has a collection of disks that it keeps. Disks can only be removed through the contents stack.
+        contents - The Disk object this Peg is currently holding in its stack
+        position - The peg position in the tower game (usually 1 for starting peg and 3 for goal peg)
     """
     def __init__(self, position):
-        self.contents = []  #the disks that this peg is currently holding (check for max disks?)
+        self.contents = []  
         self.position = position
     def _initContents(self, diskContents :[Disk]):
         if self.position == 1:
@@ -34,6 +36,7 @@ class Peg:
     def _peek(self):
         """
             Peek at the top disk of this peg
+            Returns Disk
         """
         if (len(self.contents) > 0):
             return self.contents[0]
@@ -84,13 +87,12 @@ class Peg:
         return self.contents.pop(0)
 
 
-
-
-
-
 class TowerGame:
     """
         This class holds an instance of a Tower of Hanoi game
+        WINCONDITION - bool flag that holds the state of the current game 
+        GameDisks - list of the initial collection of Disk objects
+        GamePegs - list of all pegs in the game
     """
     def __init__(self, disks=4, pegs=3):
         self.WINCONDITION = False   
@@ -116,6 +118,9 @@ class TowerGame:
         return pegNumber._checkContents()
 
     def _reportGameState(self):
+        """
+            Reports a formatted print out of the EACH Peg and disk contents in this current game object
+        """
         for i in self.GamePegs:
             print("Peg {0}".format(i.position))
             print("{0}".format(self._inspectPeg(i)))

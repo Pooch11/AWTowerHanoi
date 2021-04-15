@@ -20,10 +20,10 @@ class TowersAPITestCase(unittest.TestCase):
         r = requests.get('http://127.0.0.1:5000/?new')
         r = requests.get('http://127.0.0.1:5000/gamestatus')
         self.assertEqual(r.status_code, 200)
-
+    
     def _test_movePegAPI(self, fromPeg, toPeg):
         r = requests.get('http://127.0.0.1:5000/movepeg?from={0}&to={1}'.format(fromPeg, toPeg))
-        print(r.text)
+        #print(r.text)
 
     def test_gamewinAPI(self):
         requests.get('http://127.0.0.1:5000/?new')
@@ -51,5 +51,5 @@ class TowersAPITestCase(unittest.TestCase):
         r = requests.get('http://127.0.0.1:5000/gamewin')
         self.assertEqual(r.text, "Game Complete!")
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    unittest.main()
