@@ -7,13 +7,21 @@
 ## Goal
 
 You must implement a "Tower of Hanoi" game engine. Your implementation must expose a RESTful API which a client (implementation not in scope) can use to modify the state of a game.
+
         Requirements:
+		
         - The game engine has these responsibilities:
+		
          - Enforce the rules of the game (as stated in the article above) and report an error if any attempted move violates the rules
+		 
          - Apply the effects of any valid move to the game state
+		 
          - Provide the client with the complete state of the rods and disks
+		 
          - Determine if the victory conditions have been met
+		 
         - The game engine must support 4 disks
+		
  
 Any requirements not stated above should be decided upon by you, and documented along with your code.
 
@@ -28,23 +36,11 @@ Python 3 and PIP, see requirements.txt to see full list of packages to include
 
 *TowerAPI.py* - An API endpoint to invoke moves/options within the game
 
-*TowerTester* - An automated tester to check the validity of each game function
+*testTowerGame.py* - An automated tester to check the validity of each game function
+
+*testTowerAPI.py* - An automated tester that calls game functions through the API to validate the return data
 
 *config.py* - (deprecated) Initialy made to load in different settings for the game but is less userful at this time.
-
-## Technical Requirements:
-
-Python 3 and PIP
-
-See requirements.txt to see full list of packages to include
-
-*TowerGame.py* - Contains all the game puzzle logic
-
-*TowerAPI.py* - An API endpoint to invoke moves/options within the game
-
-*TowerTester.py* - An automated tester to check the validity of each game function
-
-*config.py* - (deprecated) Initially made to load in different settings for the game but is less useful at this time.
 
 Different game setting could be implemented using the config file but for ease of use the game configuration is determined by variables:
 
@@ -74,9 +70,11 @@ or
 
 Running 'python TowerGame.py -d' as the main entry point into a CMD version of the game in a debug mode
 
-The Tester file 
+### Tester Files 
 
-- TowerTester.py validates both Functions at the Game level version but can also be called to test appropriate responses from the API calls made.
+- testTowerGame.py uses python's unittest module to assert the return of expected behaviour
+
+- testTowerAPI.py asserts the return value of the API calls and ensures the endpoint is reachable 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## API Methods
