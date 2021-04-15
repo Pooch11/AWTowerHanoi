@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+"""
+    This is a python script dedicated to testing TowerGame.py and all its exposed Game functions
+"""
+__author__ = "Adam Pucciano"
+__date__ = "4/15/2021"
+__version__ = "1.1"
+__email__ = "adam.pucciano@gmail.com"
+__status__ = "Production"
+
 import unittest
 from TowerGame import Disk, Peg, TowerGame
 

@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+"""
+    This is the python script describing the game rules for Tower's of Hanoi Game Puzzle.
+    In this file exists 3 classes which are the game objects to create the game - TowerGame, Peg, Disk
+"""
+__author__ = "Adam Pucciano"
+__date__ = "4/15/2021"
+__version__ = "1.2"
+__email__ = "adam.pucciano@gmail.com"
+__status__ = "Production"
 import sys, json
 #Config settings
 #If in need of a config file to change the game settings (Peg/Disks) I could implement a config file read

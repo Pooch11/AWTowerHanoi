@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+"""
+    This is the python script is a tester for the TowerGame API created by TowerAPI.py
+"""
+__author__ = "Adam Pucciano"
+__date__ = "4/15/2021"
+__version__ = "1.0"
+__email__ = "adam.pucciano@gmail.com"
+__status__ = "Production"
+
 import unittest
 from TowerGame import Disk, Peg, TowerGame
 import requests
@@ -20,7 +30,7 @@ class TowersAPITestCase(unittest.TestCase):
         r = requests.get('http://127.0.0.1:5000/?new')
         r = requests.get('http://127.0.0.1:5000/gamestatus')
         self.assertEqual(r.status_code, 200)
-    
+
     def _test_movePegAPI(self, fromPeg, toPeg):
         r = requests.get('http://127.0.0.1:5000/movepeg?from={0}&to={1}'.format(fromPeg, toPeg))
         #print(r.text)
